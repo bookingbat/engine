@@ -1,12 +1,13 @@
-availability
+Introduction
 ============
 
-A framework for defining recurring windows of availability, and "subtracting" bookings/appointments from them.
+A framework for defining recurring windows of availability, and "subtracting" bookings/appointments from them. Has features for multiple windows of availability within one day, automatically 'fixes' overlapping windows, and can enforce padding between bookings.
 
-Example usage:
+Example
+============
+Lets set the availability window from 9-11am, and 11:30am-4pm
 
 ````php
-// the availability window is from 9-11am, and 11:30am-4pm
 $availability = new Availability(array(
     array(
         'start' => '09:00:00',
@@ -17,15 +18,19 @@ $availability = new Availability(array(
         'end' => '16:00:00'
     ),
 ));
+````
 
-// add a booking from 3:30-4pm & get back the adjusted availability
+
+Now we'll add a booking from 3:30-4pm & get back the adjusted availability
+````php
 $newAvailability = $availability->addBooking(array(
     'start' => '15:30',
     'end' => '16:00'
 ));
+````
 
-/*
-$newAvailability will show the actual availability is 9-11am, and 11:30-3:30pm
+$newAvailability will show the actual availability is 9-11am, and 11:30-3:30pm:
+````
 array(
     array(
         'start' => '09:00:00',
@@ -36,5 +41,4 @@ array(
         'end' => '15:30:00'
     ),
 );
-*/
 ````
