@@ -1,7 +1,7 @@
 {
     "name": "bookingbat/availability",
     "type": "library",
-    "description": "A framework for defining recurring windows of availability, and "subtracting" bookings/appointments from them.",
+    "description": "A framework for defining recurring windows of availability, and \"subtracting\" bookings/appointments from them.",
     "keywords": [],
     "homepage": "https://github.com/bookingbat/availability",
     "license": "BSD-3-Clause",
