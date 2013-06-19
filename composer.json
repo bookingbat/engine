@@ -16,5 +16,4 @@
     "autoload": {
         "psr-0": { "Bookingbat\\Availability\\": "" }
     },
-    "target-dir": "Bookingbat/Availability/"
 }
