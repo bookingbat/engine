@@ -18,14 +18,15 @@ $availability = new Availability(array(
     ),
 ));
 
-// we have a booking from 3:30-4pm
+// add a booking from 3:30-4pm & get back the adjusted availability
 $newAvailability = $availability->addBooking(array(
     'start' => '15:30',
     'end' => '16:00'
 ));
 
-// therefore the actual availability is 9-11am, and 11:30-3:30pm
-$expected = array(
+/*
+$newAvailability will show the actual availability is 9-11am, and 11:30-3:30pm
+array(
     array(
         'start' => '09:00:00',
         'end' => '11:00:00'
@@ -35,4 +36,5 @@ $expected = array(
         'end' => '15:30:00'
     ),
 );
+*/
 ````
