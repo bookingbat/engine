@@ -43,9 +43,6 @@ class Booking
 
     function allowCancelLostByUser()
     {
-        $today = strtotime($this->options['today']);
-        $booking = strtotime($this->options['date']);
-
         return !$this->completed();
     }
 
