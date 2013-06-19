@@ -1,4 +1,5 @@
 <?php
+namespace Bookingbat\Availability;
 class Booking
 {
     protected $options;
@@ -15,17 +16,17 @@ class Booking
 
     function start()
     {
-        $dateTime = new DateTime('2011-06-28 ' . $this->options['start']);
+        $dateTime = new \DateTime('2011-06-28 ' . $this->options['start']);
         return $dateTime->format("H:i:s");
     }
 
     function end()
     {
         if (isset($this->options['end'])) {
-            $dateTime = new DateTime('2011-06-28 ' . $this->options['end']);
+            $dateTime = new \DateTime('2011-06-28 ' . $this->options['end']);
         } else {
-            $dateTime = new DateTime('2011-06-28 ' . $this->start());
-            $dateTime->add(new DateInterval('P0Y0DT0H' . $this->duration() . 'M'));
+            $dateTime = new \DateTime('2011-06-28 ' . $this->start());
+            $dateTime->add(new \DateInterval('P0Y0DT0H' . $this->duration() . 'M'));
         }
         return $dateTime->format("H:i:s");
     }

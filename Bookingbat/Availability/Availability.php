@@ -9,6 +9,7 @@
  *
  */
 require_once(__DIR__.'/Booking.php');
+
 class Availability
 {
     public $availability;
@@ -22,7 +23,7 @@ class Availability
     function addBooking($booking)
     {
         if (is_array($booking)) {
-            $booking = new Booking($booking);
+            $booking = new \Bookingbat\Availability\Booking($booking);
         }
         $newAvailability = array();
         foreach ($this->availability as $periodOfAvailability) {

@@ -115,7 +115,7 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
                 'end' => '09:30:00'
             ),
         ));
-        $booking = new Booking(array(
+        $booking = new \Bookingbat\Availability\Booking(array(
             'start' => '08:30',
             'end' => '09:30'
         ));

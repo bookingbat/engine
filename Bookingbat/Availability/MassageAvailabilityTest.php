@@ -165,7 +165,7 @@ class MassageAvailabilityTest extends PHPUnit_Framework_TestCase
         );
 
         $availability = new MassageAvailability($availability);
-        $possibleUserIds = $availability->possibleUserIdsForBooking(new Booking(array('start' => '02:00', 'end' => '03:00')));
+        $possibleUserIds = $availability->possibleUserIdsForBooking(new \Bookingbat\Availability\Booking(array('start' => '02:00', 'end' => '03:00')));
         $this->assertEquals(array(1), $possibleUserIds);
     }
 
@@ -179,7 +179,7 @@ class MassageAvailabilityTest extends PHPUnit_Framework_TestCase
         );
 
         $availability = new MassageAvailability(array_merge($availabilityForUser1, $availabilityForUser2));
-        $possibleUserIds = $availability->possibleUserIdsForBooking(new Booking(array('start' => '02:00', 'end' => '03:00')));
+        $possibleUserIds = $availability->possibleUserIdsForBooking(new \Bookingbat\Availability\Booking(array('start' => '02:00', 'end' => '03:00')));
         $this->assertEquals(array(1, 2), $possibleUserIds);
     }
 
@@ -193,9 +193,9 @@ class MassageAvailabilityTest extends PHPUnit_Framework_TestCase
         );
 
         $availability = new MassageAvailability(array_merge($availabilityForUser1, $availabilityForUser2));
-        $availability->addBooking(new Booking(array('start' => '20:00', 'end' => '20:30', 'user_id' => 2)));
+        $availability->addBooking(new \Bookingbat\Availability\Booking(array('start' => '20:00', 'end' => '20:30', 'user_id' => 2)));
 
-        $possibleUserIds = $availability->possibleUserIdsForBooking(new Booking(array('start' => '20:00', 'end' => '20:30')));
+        $possibleUserIds = $availability->possibleUserIdsForBooking(new \Bookingbat\Availability\Booking(array('start' => '20:00', 'end' => '20:30')));
         $this->assertEquals(array(1), $possibleUserIds);
     }
 
@@ -208,7 +208,7 @@ class MassageAvailabilityTest extends PHPUnit_Framework_TestCase
             array('user_id' => 15, 'start' => '19:00:00', 'end' => '22:30:00'),
         );
         $availability = new MassageAvailability(array_merge($availabilityForUser1, $availabilityForUser2));
-        $possibleUserIds = $availability->possibleUserIdsForBooking(new Booking(array('start' => '21:00:00', 'duration' => 90)));
+        $possibleUserIds = $availability->possibleUserIdsForBooking(new \Bookingbat\Availability\Booking(array('start' => '21:00:00', 'duration' => 90)));
         $this->assertEquals(array(15), $possibleUserIds, 'availability windows shorter than the requested appointment length should not be included in the list of possible user IDs');
     }
 
@@ -222,7 +222,7 @@ class MassageAvailabilityTest extends PHPUnit_Framework_TestCase
         );
 
         $availability = new MassageAvailability(array_merge($availabilityForUser1, $availabilityForUser2));
-        $possibleUserIds = $availability->possibleUserIdsForBooking(new Booking(array('start' => '01:00', 'end' => '02:00')));
+        $possibleUserIds = $availability->possibleUserIdsForBooking(new \Bookingbat\Availability\Booking(array('start' => '01:00', 'end' => '02:00')));
         $this->assertEquals(array(1), $possibleUserIds);
     }
 
@@ -236,7 +236,7 @@ class MassageAvailabilityTest extends PHPUnit_Framework_TestCase
         );
 
         $availability = new MassageAvailability(array_merge($availabilityForUser1, $availabilityForUser2));
-        $possibleUserIds = $availability->possibleUserIdsForBooking(new Booking(array('start' => '03:00', 'end' => '03:30')));
+        $possibleUserIds = $availability->possibleUserIdsForBooking(new \Bookingbat\Availability\Booking(array('start' => '03:00', 'end' => '03:30')));
         $this->assertEquals(array(1), $possibleUserIds);
     }
 
