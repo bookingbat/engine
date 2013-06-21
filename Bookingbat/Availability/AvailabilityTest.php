@@ -38,7 +38,10 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
                 'end' => '16:00:00'
             ),
         ));
-        $newAvailability = $availability->addBooking(array('start' => '15:30', 'end' => '16:00'));
+        $newAvailability = $availability->addBooking(array(
+            'start' => '15:30',
+            'end' => '16:00'
+        ));
 
         $expected = array(
             array(
@@ -62,7 +65,10 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
                 'end' => '11:00:00'
             )
         ));
-        $availability->addBooking(array('start' => '09:00', 'end' => '10:00'));
+        $availability->addBooking(array(
+            'start' => '09:00',
+            'end' => '10:00'
+        ));
         $actual = $availability->getBookedTimes();
         $expected = array(array(
             'start' => '09:00:00',
@@ -83,7 +89,10 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
                 'end' => '16:00:00'
             ),
         ));
-        $newAvailability = $availability->addBooking(array('start' => '12:00', 'end' => '12:30'));
+        $newAvailability = $availability->addBooking(array(
+            'start' => '12:00',
+            'end' => '12:30'
+        ));
 
         $expected = array(
             array(
@@ -511,7 +520,10 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
                 'user_id' => 1
             )
         ));
-        $newAvailability = $availability->addBooking(array('start' => '09:00', 'end' => '09:30'));
+        $newAvailability = $availability->addBooking(array(
+            'start' => '09:00',
+            'end' => '09:30'
+        ));
 
         $this->assertEquals(1, $newAvailability[0]['user_id'], 'addBooking() should preserve userID');
     }
@@ -527,7 +539,10 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
         ), array(
             'padding'=>30
         ));
-        $newAvailability = $availability->addBooking(array('start' => '09:00', 'end' => '09:30'));
+        $newAvailability = $availability->addBooking(array(
+            'start' => '09:00',
+            'end' => '09:30'
+        ));
 
         $expected = array(
             array(
@@ -551,7 +566,10 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
         ), array(
             'padding'=>60
         ));
-        $newAvailability = $availability->addBooking(array('start' => '09:00', 'end' => '09:30'));
+        $newAvailability = $availability->addBooking(array(
+            'start' => '09:00',
+            'end' => '09:30'
+        ));
 
         $expected = array(
             array(
@@ -575,7 +593,10 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
         ), array(
             'padding'=>30
         ));
-        $newAvailability = $availability->addBooking(array('start' => '09:00', 'end' => '09:30'));
+        $newAvailability = $availability->addBooking(array(
+            'start' => '09:00',
+            'end' => '09:30'
+        ));
 
         $expected = array(
             array(
@@ -621,7 +642,11 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
             array(
                 'padding'=>30
             ));
-        $newAvailability = $availability->addBooking(array('start' => '02:00', 'end' => '02:30', 'user_id' => 1));
+        $newAvailability = $availability->addBooking(array(
+            'start' => '02:00',
+            'end' => '02:30',
+            'user_id' => 1
+        ));
 
         $expected = array(
             array(
@@ -653,7 +678,11 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
             array(
                 'padding'=>30
             ));
-        $availabilityArray = $availability->addBooking(array('start' => '02:00', 'end' => '02:30', 'user_id' => 1));
+        $availabilityArray = $availability->addBooking(array(
+            'start' => '02:00',
+            'end' => '02:30',
+            'user_id' => 1
+        ));
 
         $newAvailability = $availability->mergeOverlappingRanges();
 
@@ -683,8 +712,16 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
             array(
                 'padding'=>30
             ));
-        $availability->addBooking(array('start' => '02:00', 'end' => '02:30', 'user_id' => 1));
-        $availabilityArray = $availability->addBooking(array('start' => '02:00', 'end' => '02:30', 'user_id' => 2));
+        $availability->addBooking(array(
+            'start' => '02:00',
+            'end' => '02:30',
+            'user_id' => 1
+        ));
+        $availabilityArray = $availability->addBooking(array(
+            'start' => '02:00',
+            'end' => '02:30',
+            'user_id' => 2
+        ));
 
         $newAvailability = $availability->mergeOverlappingRanges();
 
@@ -713,7 +750,10 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
             array(
                 'padding'=>30
             ));
-        $availabilityArray = $availability->addBooking(array('start' => '20:00', 'user_id' => 2));
+        $availabilityArray = $availability->addBooking(array(
+            'start' => '20:00',
+            'user_id' => 2
+        ));
 
         $newAvailability = $availability->mergeOverlappingRanges();
 
