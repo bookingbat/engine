@@ -67,32 +67,55 @@ class MassageAvailability extends Availability
             $this->periodOfAvailability['start'] = $this->format($this->periodOfAvailability['start']);
             $this->periodOfAvailability['end'] = $this->format($this->periodOfAvailability['end']);
 
-            if ($this->booking->start() <= $this->periodOfAvailability['start'] && $this->booking->end() >= $this->periodOfAvailability['end']) {
+            if ($this->bookingConsumesAvailability()) {
                 continue;
             } else if ($this->bookingAtStartOfAvailability()) {
                 // when booking at start of the availability
                 // should modify availability to start when booking ends
-                $newAvailability[] = array('start' => $this->booking->end(), 'end' => $this->periodOfAvailability['end'], 'user_id' => $this->periodOfAvailability['user_id']);
-            } else if ($this->booking->end() == $this->periodOfAvailability['end']) {
+                $newAvailability[] = array(
+                    'start' => $this->booking->end(),
+                    'end' => $this->periodOfAvailability['end'],
+                    'user_id' => $this->periodOfAvailability['user_id']
+                );
+            } else if ($this->bookingAtEndOfAvailability()) {
                 // when booking at end  of the availability
                 //should modify availability to end when booking starts
-                $newAvailability[] = array('is-computed' => true, 'start' => $this->periodOfAvailability['start'], 'end' => $this->booking->start(), 'user_id' => $this->periodOfAvailability['user_id']);
-            } else if ($this->booking->start() > $this->periodOfAvailability['start'] && $this->booking->end() < $this->periodOfAvailability['end']) {
+                $newAvailability[] = array(
+                    'is-computed' => true,
+                    'start' => $this->periodOfAvailability['start'],
+                    'end' => $this->booking->start(),
+                    'user_id' => $this->periodOfAvailability['user_id']
+                );
+            } else if ($this->bookingInMiddleOfAvailability()) {
                 // when booking is in middle of the availability, should split availability to end at start of booking, and start again at end of booking
                 // don't allow time blocks smaller than the minimum appointment length
                 if ($this->periodOfAvailability['user_id'] == $this->booking->userId() && $this->booking->start() - $this->periodOfAvailability['start'] > 1) {
-                    $newAvailability[] = array('is-computed' => true, 'start' => $this->periodOfAvailability['start'], 'end' => $this->booking->start(), 'user_id' => $this->periodOfAvailability['user_id']);
+                    $newAvailability[] = array(
+                        'is-computed' => true,
+                        'start' => $this->periodOfAvailability['start'],
+                        'end' => $this->booking->start(),
+                        'user_id' => $this->periodOfAvailability['user_id']
+                    );
                 }
                 if ($this->periodOfAvailability['user_id'] == $this->booking->userId() && $this->periodOfAvailability['end'] - $this->booking->end() >= 1) {
-                    $newAvailability[] = array('start' => $this->booking->end(), 'end' => $this->periodOfAvailability['end'], 'user_id' => $this->periodOfAvailability['user_id']);
+                    $newAvailability[] = array(
+                        'start' => $this->booking->end(),
+                        'end' => $this->periodOfAvailability['end'],
+                        'user_id' => $this->periodOfAvailability['user_id']
+                    );
                 }
-            } else if ($this->booking->start() > $this->periodOfAvailability['start'] && $this->booking->end() >= $this->periodOfAvailability['end']) {
+            } else if ($this->bookingEntirelyAfterAvailability()) {
                 // booking starts after availability starts, and ends after availability ends
                 // don't allow time blocks smaller than the minimum appointment length
                 if ($this->booking->start() - $this->periodOfAvailability['start'] <= 1) {
                     continue;
                 }
-                $newAvailability[] = array('is-computed' => true, 'start' => $this->periodOfAvailability['start'], 'end' => $this->booking->start(), 'user_id' => $this->periodOfAvailability['user_id']);
+                $newAvailability[] = array(
+                    'is-computed' => true,
+                    'start' => $this->periodOfAvailability['start'],
+                    'end' => $this->booking->start(),
+                    'user_id' => $this->periodOfAvailability['user_id']
+                );
             } // when no bookings during this period, return period unmodified
             else {
                 $newAvailability[] = $this->periodOfAvailability;
@@ -102,9 +125,29 @@ class MassageAvailability extends Availability
         return $this->availability;
     }
 
+    function bookingConsumesAvailability()
+    {
+        return $this->booking->start() <= $this->periodOfAvailability['start'] && $this->booking->end() >= $this->periodOfAvailability['end'];
+    }
+
     function bookingAtStartOfAvailability()
     {
         return $this->booking->start() == $this->periodOfAvailability['start'];
+    }
+
+    function bookingAtEndOfAvailability()
+    {
+        return $this->booking->end() == $this->periodOfAvailability['end'];
+    }
+
+    function bookingInMiddleOfAvailability()
+    {
+        return $this->booking->start() > $this->periodOfAvailability['start'] && $this->booking->end() < $this->periodOfAvailability['end'];
+    }
+
+    function bookingEntirelyAfterAvailability()
+    {
+        return $this->booking->start() > $this->periodOfAvailability['start'] && $this->booking->end() >= $this->periodOfAvailability['end'];
     }
 
     function incrementize($availability, $duration = 30, $lengthOfAppointmentToMake = null)
