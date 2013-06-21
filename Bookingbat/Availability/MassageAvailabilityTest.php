@@ -4,6 +4,56 @@ require_once(dirname(__FILE__) . '/MassageAvailability.php');
 require_once('Booking.php');
 class MassageAvailabilityTest extends PHPUnit_Framework_TestCase
 {
+    function test_WhenHasOneBookingAtStartShouldModifyAvailability()
+    {
+        $availability = new Availability(array(
+            array(
+                'start' => '09:00:00',
+                'end' => '11:00:00'
+            )
+
+        ));
+        $availability->addBooking(array('start' => '09:00', 'end' => '09:30'));
+        $newAvailability = $availability->getAvailabilityTimes();
+
+        $expected = array(
+            array(
+                'start' => '09:30:00',
+                'end' => '11:00:00'
+            )
+        );
+
+        $this->assertEquals($expected, $newAvailability, 'when booking at start of the availability, should modify availability to start when booking ends');
+    }
+
+    function test_WhenHasOneBookingAtEndShouldModifyAvailability()
+    {
+        $availability = new Availability(array(
+            array(
+                'start' => '09:00:00',
+                'end' => '11:00:00'
+            ),
+            array(
+                'start' => '11:30:00',
+                'end' => '16:00:00'
+            ),
+        ));
+        $newAvailability = $availability->addBooking(array('start' => '15:30', 'end' => '16:00'));
+
+        $expected = array(
+            array(
+                'start' => '09:00:00',
+                'end' => '11:00:00'
+            ),
+            array(
+                'start' => '11:30:00',
+                'end' => '15:30:00'
+            ),
+        );
+
+        $this->assertEquals($expected, $newAvailability, 'when booking at end  of the availability, should modify availability to end when booking starts');
+    }
+
     function testShouldListBookedTimes()
     {
         $availability = new MassageAvailability(array(
@@ -19,6 +69,218 @@ class MassageAvailabilityTest extends PHPUnit_Framework_TestCase
             'end' => '10:00:00'
         ));
         $this->assertEquals($expected, $actual, 'should list booked times');
+    }
+
+    function test_WhenHasOneBookingInMiddleShouldModifyAvailability()
+    {
+        $availability = new Availability(array(
+            array(
+                'start' => '09:00:00',
+                'end' => '11:00:00'
+            ),
+            array(
+                'start' => '11:30:00',
+                'end' => '16:00:00'
+            ),
+        ));
+        $newAvailability = $availability->addBooking(array('start' => '12:00', 'end' => '12:30'));
+
+        $expected = array(
+            array(
+                'start' => '09:00:00',
+                'end' => '11:00:00'
+            ),
+            array(
+                'start' => '11:30:00',
+                'end' => '12:00:00'
+            ),
+            array(
+                'start' => '12:30:00',
+                'end' => '16:00:00'
+            ),
+        );
+
+        $this->assertEquals($expected, $newAvailability, 'when booking is in middle of the availability, should split availability to end at start of booking, and start again at end of booking');
+    }
+
+    function test_WhenBookingStartsBeforeAvailability()
+    {
+        $availability = new Availability(array(
+            array(
+                'start' => '09:00:00',
+                'end' => '09:30:00'
+            ),
+        ));
+        $booking = new \Bookingbat\Availability\Booking(array(
+            'start' => '08:30',
+            'end' => '09:30'
+        ));
+        $newAvailability = $availability->addBooking($booking);
+
+
+        $expected = array();
+
+        $this->assertEquals($expected, $newAvailability, 'when booking begins before availability, and consumes entire availability, should be no more availability');
+    }
+
+    function test_WhenBookingExtendsBeyondAvailability()
+    {
+        $availability = new Availability(array(
+            array(
+                'start' => '09:00',
+                'end' => '09:30'
+            ),
+        ));
+        $booking = array(
+            'start' => '09:00',
+            'end' => '10:00'
+        );
+        $newAvailability = $availability->addBooking($booking);
+
+
+        $expected = array();
+
+        $this->assertEquals($expected, $newAvailability, 'when booking extends beyond availability, and consumes entire availability, should be no more availability');
+    }
+
+    function test_WhenBookingStartsBeforeAvailabilityAndExtendsBeyond()
+    {
+        $availability = new Availability(array(
+            array(
+                'start' => '09:00',
+                'end' => '09:30'
+            ),
+        ));
+        $booking = array(
+            'start' => '08:00',
+            'end' => '10:00'
+        );
+        $newAvailability = $availability->addBooking($booking);
+
+
+        $expected = array();
+
+        $this->assertEquals($expected, $newAvailability, 'when booking starts before available, & extends beyond availability, should be no more availability');
+    }
+
+    function test_WhenBookingMatchesAvailability()
+    {
+        $availability = new Availability(array(
+            array(
+                'start' => '09:00',
+                'end' => '09:30'
+            ),
+        ));
+        $booking = array(
+            'start' => '09:00',
+            'end' => '09:30'
+        );
+        $newAvailability = $availability->addBooking($booking);
+
+
+        $expected = array();
+
+        $this->assertEquals($expected, $newAvailability, 'when booking matches [consumes entire] availability, should be no more availability');
+    }
+
+    function test_WhenBookingIsSameAsAvailability()
+    {
+        $availability = new Availability(array(
+            array(
+                'start' => '00:30:00',
+                'end' => '01:00:00'
+            )
+        ));
+        $booking = array(
+            'start' => '00:30:00',
+            'end' => '01:00:00'
+        );
+        $newAvailability = $availability->addBooking($booking);
+
+
+        $expected = array();
+
+        $this->assertEquals($expected, $newAvailability, 'when booking consumes availability and extends past , should have no more availability');
+    }
+
+    function test_WhenBookingIsSameAsAvailabilityAndTheyEndAtMidnight()
+    {
+        $availability = new Availability(array(
+            array(
+                'start' => '23:30:00',
+                'end' => '00:00:00'
+            )
+        ));
+        $booking = array(
+            'start' => '23:30:00',
+            'end' => '00:00:00'
+        );
+        $newAvailability = $availability->addBooking($booking);
+
+
+        $expected = array();
+
+        $this->assertEquals($expected, $newAvailability, 'when booking consumes availability and they end at midnight should still block off availability');
+    }
+
+    function test_WhenHourLongAvailabilitySameAsBooking()
+    {
+        $availability = new Availability(array(
+            array(
+                'start' => '03:30:00',
+                'end' => '04:30:00'
+            )
+        ));
+        $booking = array(
+            'start' => '03:30:00',
+            'end' => '04:30:00'
+        );
+        $newAvailability = $availability->addBooking($booking);
+
+
+        $expected = array();
+
+        $this->assertEquals($expected, $newAvailability, 'when booking is an hour long and consumes availability should no longer be available');
+    }
+
+    function test_WhenBookingConsumesAndExtendsPastAvailability()
+    {
+        $availability = new Availability(array(
+            array(
+                'start' => '09:00',
+                'end' => '09:30'
+            )
+        ));
+        $booking = array(
+            'start' => '09:00',
+            'end' => '10:00'
+        );
+        $newAvailability = $availability->addBooking($booking);
+
+
+        $expected = array();
+
+        $this->assertEquals($expected, $newAvailability, 'when booking extends past availability, should have no more availability');
+    }
+
+    function test_ShouldCompareByTimeNotString()
+    {
+        $availability = new Availability(array(
+            array(
+                'start' => '00:30:00',
+                'end' => '01:00:00'
+            )
+        ));
+        $booking = array(
+            'start' => '00:30',
+            'end' => '01:00'
+        );
+        $newAvailability = $availability->addBooking($booking);
+
+
+        $expected = array();
+
+        $this->assertEquals($expected, $newAvailability, 'should compare time value, not string value');
     }
 
     function test_ShouldMergeAdjacentRanges()
