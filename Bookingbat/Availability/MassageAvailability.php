@@ -104,44 +104,6 @@ class MassageAvailability extends Availability
         return $this->availability;
     }
 
-    function modifyAvailabilityToStartWhenBookingEnds()
-    {
-        $this->newAvailability[] = array(
-            'start' => $this->booking->end(),
-            'end' => $this->periodOfAvailability['end'],
-            'user_id' => $this->periodOfAvailability['user_id']
-        );
-    }
-
-    function modifyAvailabilityToEndWhenBookingStarts()
-    {
-        $this->newAvailability[] = array(
-            'is-computed' => true,
-            'start' => $this->periodOfAvailability['start'],
-            'end' => $this->booking->start(),
-            'user_id' => $this->periodOfAvailability['user_id']
-        );
-    }
-
-    function splitAvailabilityAroundBooking()
-    {
-        if ($this->periodOfAvailability['user_id'] == $this->booking->userId() && $this->booking->start() - $this->periodOfAvailability['start'] > 1) {
-            $this->newAvailability[] = array(
-                'is-computed' => true,
-                'start' => $this->periodOfAvailability['start'],
-                'end' => $this->booking->start(),
-                'user_id' => $this->periodOfAvailability['user_id']
-            );
-        }
-        if ($this->periodOfAvailability['user_id'] == $this->booking->userId() && $this->periodOfAvailability['end'] - $this->booking->end() >= 1) {
-            $this->newAvailability[] = array(
-                'start' => $this->booking->end(),
-                'end' => $this->periodOfAvailability['end'],
-                'user_id' => $this->periodOfAvailability['user_id']
-            );
-        }
-    }
-
     function incrementize($availability, $duration = 30, $lengthOfAppointmentToMake = null)
     {
         if (!count($availability)) {

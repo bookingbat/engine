@@ -44,7 +44,7 @@ class Availability
             } else if ($this->bookingAtStartOfAvailability()) {
                 // when booking at start of the availability
                 // should modify availability to start when booking ends
-                $newAvailability[] = array('start' => $this->booking->end(), 'end' => $this->periodOfAvailability['end']);
+                $this->modifyAvailabilityToStartWhenBookingEnds();
             } else if ($this->bookingAtEndOfAvailability()) {
                 // when booking at end  of the availability
                 //should modify availability to end when booking starts'
@@ -87,6 +87,44 @@ class Availability
     function bookingEntirelyAfterAvailability()
     {
         return $this->booking->start() > $this->periodOfAvailability['start'] && $this->booking->end() >= $this->periodOfAvailability['end'];
+    }
+
+    function modifyAvailabilityToStartWhenBookingEnds()
+    {
+        $this->newAvailability[] = array(
+            'start' => $this->booking->end(),
+            'end' => $this->periodOfAvailability['end'],
+            'user_id' => $this->periodOfAvailability['user_id']
+        );
+    }
+
+    function modifyAvailabilityToEndWhenBookingStarts()
+    {
+        $this->newAvailability[] = array(
+            'is-computed' => true,
+            'start' => $this->periodOfAvailability['start'],
+            'end' => $this->booking->start(),
+            'user_id' => $this->periodOfAvailability['user_id']
+        );
+    }
+
+    function splitAvailabilityAroundBooking()
+    {
+        if ($this->periodOfAvailability['user_id'] == $this->booking->userId() && $this->booking->start() - $this->periodOfAvailability['start'] > 1) {
+            $this->newAvailability[] = array(
+                'is-computed' => true,
+                'start' => $this->periodOfAvailability['start'],
+                'end' => $this->booking->start(),
+                'user_id' => $this->periodOfAvailability['user_id']
+            );
+        }
+        if ($this->periodOfAvailability['user_id'] == $this->booking->userId() && $this->periodOfAvailability['end'] - $this->booking->end() >= 1) {
+            $this->newAvailability[] = array(
+                'start' => $this->booking->end(),
+                'end' => $this->periodOfAvailability['end'],
+                'user_id' => $this->periodOfAvailability['user_id']
+            );
+        }
     }
 
     function mergeOverlappingRanges()
