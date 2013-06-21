@@ -14,10 +14,17 @@ class Availability
 {
     public $availability;
     protected $bookings = array();
+    protected $padding=0;
 
-    function __construct($availability=array())
+    function __construct($availability=array(), $options = array())
     {
         $this->availability = $availability;
+        foreach($options as $option=>$value) {
+            switch($option) {
+                case 'padding':
+                    $this->padding = $value;
+            }
+        }
     }
 
     function addBooking($booking)

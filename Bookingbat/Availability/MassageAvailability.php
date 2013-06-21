@@ -41,8 +41,16 @@ class MassageAvailability extends Availability
         $end = new DateTime($booking->end());
         array_push($this->bookings, $booking);
 
-        $end->add(new DateInterval("P0Y0DT0H30M")); // pad 30m after appointments to allow travel between condos
-        $booking = new \Bookingbat\Availability\Booking(array('start' => $booking->start(), 'end' => $end->format('H:i:00'), 'user_id' => $booking->userId()));
+        // pad between appointments to allow reset time
+        if($this->padding) {
+            $end->add(new DateInterval("P0Y0DT0H".$this->padding."M"));
+        }
+
+        $booking = new \Bookingbat\Availability\Booking(array(
+            'start' => $booking->start(),
+            'end' => $end->format('H:i:00'),
+            'user_id' => $booking->userId()
+        ));
 
         $newAvailability = array();
         foreach ($this->availability as $periodOfAvailability) {

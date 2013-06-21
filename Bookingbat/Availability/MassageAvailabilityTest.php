@@ -248,7 +248,8 @@ class MassageAvailabilityTest extends PHPUnit_Framework_TestCase
                 'end' => '11:00:00',
                 'user_id' => 1
             )
-
+        ), array(
+            'padding'=>30
         ));
         $newAvailability = $availability->addBooking(array('start' => '09:00', 'end' => '09:30'));
 
@@ -271,6 +272,8 @@ class MassageAvailabilityTest extends PHPUnit_Framework_TestCase
                 'end' => '11:00:00'
             )
 
+        ), array(
+            'padding'=>30
         ));
         $newAvailability = $availability->addBooking(array('start' => '09:00', 'end' => '09:30'));
 
@@ -293,8 +296,13 @@ class MassageAvailabilityTest extends PHPUnit_Framework_TestCase
                 'end' => '11:00:00'
             )
 
+        ), array(
+            'padding'=>30
         ));
-        $newAvailability = $availability->addBooking(array('start' => '10:00', 'end' => '11:00'));
+        $newAvailability = $availability->addBooking(array(
+            'start' => '10:00',
+            'end' => '11:00'
+        ));
         $this->assertEquals(array(), $newAvailability, 'Should not allow two 2-hour sessions in a 2-hour window due to required 30m padding between appointments');
     }
 
@@ -308,7 +316,11 @@ class MassageAvailabilityTest extends PHPUnit_Framework_TestCase
             array('user_id' => 2, 'start' => '02:00:00', 'end' => '03:00:00'),
         );
 
-        $availability = new MassageAvailability(array_merge($availabilityForUser1, $availabilityForUser2));
+        $availability = new MassageAvailability(
+            array_merge($availabilityForUser1, $availabilityForUser2),
+            array(
+                'padding'=>30
+            ));
         $newAvailability = $availability->addBooking(array('start' => '02:00', 'end' => '02:30', 'user_id' => 1));
 
         $expected = array(
@@ -336,7 +348,11 @@ class MassageAvailabilityTest extends PHPUnit_Framework_TestCase
             array('user_id' => 2, 'start' => '01:00:00', 'end' => '04:00:00'),
         );
 
-        $availability = new MassageAvailability(array_merge($availabilityForUser1, $availabilityForUser2));
+        $availability = new MassageAvailability(
+            array_merge($availabilityForUser1, $availabilityForUser2),
+            array(
+                'padding'=>30
+            ));
         $availabilityArray = $availability->addBooking(array('start' => '02:00', 'end' => '02:30', 'user_id' => 1));
 
         $newAvailability = $availability->mergeOverlappingRanges();
@@ -362,7 +378,11 @@ class MassageAvailabilityTest extends PHPUnit_Framework_TestCase
             array('user_id' => 2, 'start' => '02:00:00', 'end' => '03:30:00'),
         );
 
-        $availability = new MassageAvailability(array_merge($availabilityForUser1, $availabilityForUser2));
+        $availability = new MassageAvailability(
+            array_merge($availabilityForUser1, $availabilityForUser2),
+            array(
+                'padding'=>30
+            ));
         $availability->addBooking(array('start' => '02:00', 'end' => '02:30', 'user_id' => 1));
         $availabilityArray = $availability->addBooking(array('start' => '02:00', 'end' => '02:30', 'user_id' => 2));
 
@@ -388,7 +408,11 @@ class MassageAvailabilityTest extends PHPUnit_Framework_TestCase
             array('user_id' => 2, 'start' => '19:00:00', 'end' => '22:30:00'),
         );
 
-        $availability = new MassageAvailability(array_merge($availabilityForUser1, $availabilityForUser2));
+        $availability = new MassageAvailability(
+            array_merge($availabilityForUser1, $availabilityForUser2),
+            array(
+                'padding'=>30
+            ));
         $availabilityArray = $availability->addBooking(array('start' => '20:00', 'user_id' => 2));
 
         $newAvailability = $availability->mergeOverlappingRanges();
@@ -429,7 +453,10 @@ class MassageAvailabilityTest extends PHPUnit_Framework_TestCase
                 'end' => '04:00:00'
             )
         );
-        $availability = new MassageAvailability($input);
+        $availability = new MassageAvailability($input,
+            array(
+                'padding'=>30
+            ));
         $availabilityArray = $availability->addBooking(array('start' => '01:00:00', 'duration' => 90));
         $times = $this->incrementize($availabilityArray, 0, 90);
         $this->assertEquals(array(), $times, 'when available from 1-4am, has an appointment from 1-2:30am cannot schedule 90m appointment in remaining window of 2:30-4:00 because of extra 30m travel');
@@ -443,7 +470,10 @@ class MassageAvailabilityTest extends PHPUnit_Framework_TestCase
                 'end' => '05:00:00'
             )
         );
-        $availability = new MassageAvailability($input);
+        $availability = new MassageAvailability($input,
+            array(
+                'padding'=>30
+            ));
         $availabilityArray = $availability->addBooking(array('start' => '01:00:00', 'duration' => 90));
         $times = $this->incrementize($availabilityArray, 0, 90);
         $expected = array('03:00:00', '03:30:00');
@@ -458,7 +488,7 @@ class MassageAvailabilityTest extends PHPUnit_Framework_TestCase
                 'end' => '04:30:00'
             )
         );
-        $availability = new MassageAvailability($input);
+        $availability = new MassageAvailability($input,array('padding'=>30));
         $availabilityArray = $availability->addBooking(array('start' => '01:00:00', 'duration' => 90));
         $times = $this->incrementize($availabilityArray, 0, 90);
         $expected = array('03:00:00');
@@ -473,7 +503,10 @@ class MassageAvailabilityTest extends PHPUnit_Framework_TestCase
                 'end' => '04:30:00'
             )
         );
-        $availability = new MassageAvailability($input);
+        $availability = new MassageAvailability($input,
+            array(
+                'padding'=>30
+            ));
         $availabilityArray = $availability->addBooking(array('start' => '01:00:00', 'duration' => 90));
         $times = $this->incrementize($availabilityArray, 0, 60);
         $expected = array('03:00:00', '03:30:00');
@@ -488,7 +521,10 @@ class MassageAvailabilityTest extends PHPUnit_Framework_TestCase
                 'end' => '05:00:00'
             )
         );
-        $availability = new MassageAvailability($input);
+        $availability = new MassageAvailability($input,
+            array(
+                'padding'=>30
+            ));
         $availabilityArray = $availability->addBooking(array('start' => '01:00:00', 'duration' => 90));
         $times = $this->incrementize($availabilityArray, 0, 60);
         $expected = array('03:00:00', '03:30:00', '04:00:00');
@@ -503,7 +539,10 @@ class MassageAvailabilityTest extends PHPUnit_Framework_TestCase
                 'end' => '7:00:00'
             )
         );
-        $availability = new MassageAvailability($input);
+        $availability = new MassageAvailability($input,
+            array(
+                'padding'=>30
+            ));
         $availabilityArray = $availability->addBooking(array('start' => '03:30:00', 'duration' => 90));
 
         $times = $this->incrementize($availabilityArray, 0, 90);
@@ -525,7 +564,10 @@ class MassageAvailabilityTest extends PHPUnit_Framework_TestCase
                 'end' => '02:00:00'
             )
         );
-        $availability = new MassageAvailability($input);
+        $availability = new MassageAvailability($input,
+            array(
+                'padding'=>30
+            ));
 
         $times = $this->incrementize($input, 0, 60);
         $expected = array('01:00:00');
@@ -552,7 +594,7 @@ class MassageAvailabilityTest extends PHPUnit_Framework_TestCase
                 'end' => '22:30:00'
             )
         );
-        $availability = new MassageAvailability($input);
+        $availability = new MassageAvailability($input,array('padding'=>30));
         $availabilityArray = $availability->addBooking(array('start' => '21:30:00', 'duration' => 60));
         $expected = array();
         $this->assertEquals($expected, $availabilityArray, 'should mark out availability when booking & availability end at same time');
@@ -566,7 +608,10 @@ class MassageAvailabilityTest extends PHPUnit_Framework_TestCase
                 'end' => '22:30:00'
             )
         );
-        $availability = new MassageAvailability($input);
+        $availability = new MassageAvailability($input,
+            array(
+                'padding'=>30
+            ));
         $availabilityArray = $availability->addBooking(array('start' => '21:30:00', 'duration' => 60));
         $times = $this->incrementize($availabilityArray, 0, 60);
         $expected = array('19:00:00', '19:30:00', '20:00:00');
@@ -581,7 +626,10 @@ class MassageAvailabilityTest extends PHPUnit_Framework_TestCase
                 'end' => '22:30:00'
             )
         );
-        $availability = new MassageAvailability($input);
+        $availability = new MassageAvailability($input,
+            array(
+                'padding'=>30
+            ));
         $availabilityArray = $availability->addBooking(array('start' => '20:00:00', 'duration' => 90));
         $this->assertEquals(array(), $availabilityArray, 'should not allow appointments smaller than the minimum length');
     }
