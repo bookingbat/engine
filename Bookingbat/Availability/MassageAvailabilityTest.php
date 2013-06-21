@@ -248,6 +248,20 @@ class MassageAvailabilityTest extends PHPUnit_Framework_TestCase
                 'end' => '11:00:00',
                 'user_id' => 1
             )
+        ));
+        $newAvailability = $availability->addBooking(array('start' => '09:00', 'end' => '09:30'));
+
+        $this->assertEquals(1, $newAvailability[0]['user_id'], 'addBooking() should preserve userID');
+    }
+
+    function test_AddBookingShouldPad30MinutesAfter()
+    {
+        $availability = new MassageAvailability(array(
+            array(
+                'start' => '09:00:00',
+                'end' => '11:00:00',
+                'user_id' => 1
+            )
         ), array(
             'padding'=>30
         ));
@@ -261,7 +275,31 @@ class MassageAvailabilityTest extends PHPUnit_Framework_TestCase
             )
         );
 
-        $this->assertEquals($expected, $newAvailability, 'addBooking() should preserve userID');
+        $this->assertEquals($expected, $newAvailability, 'addBooking() should pad 30 minutes after');
+    }
+
+    function test_AddBookingShouldPad60MinutesAfter()
+    {
+        $availability = new MassageAvailability(array(
+            array(
+                'start' => '09:00:00',
+                'end' => '11:00:00',
+                'user_id' => 1
+            )
+        ), array(
+            'padding'=>60
+        ));
+        $newAvailability = $availability->addBooking(array('start' => '09:00', 'end' => '09:30'));
+
+        $expected = array(
+            array(
+                'start' => '10:30:00',
+                'end' => '11:00:00',
+                'user_id' => 1,
+            )
+        );
+
+        $this->assertEquals($expected, $newAvailability, 'addBooking() should pad 60 minutes after');
     }
 
     function test_ShouldAddExtra30MinutesAfterBooking()
