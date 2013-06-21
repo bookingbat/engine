@@ -57,7 +57,6 @@ class Availability
             } else if ($this->bookingInMiddleOfAvailability()) {
                 // when booking is in middle of the availability
                 // should split availability to end at start of booking, and start again at end of booking
-
                 $this->splitAvailabilityAroundBooking();
             } else {
                 // when no bookings during this period, return period unmodified
