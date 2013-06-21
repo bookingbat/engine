@@ -121,7 +121,8 @@ class Availability
 
     function splitAvailabilityAroundBooking()
     {
-        if ($this->periodOfAvailability['user_id'] == $this->booking->userId() && $this->booking->start() - $this->periodOfAvailability['start'] > 1) {
+        $wouldLeaveOpeningSmallerThanMinimumBefore = $this->booking->start() - $this->periodOfAvailability['start'] <= 1;
+        if ($this->periodOfAvailability['user_id'] == $this->booking->userId() && !$wouldLeaveOpeningSmallerThanMinimumBefore) {
             $this->newAvailability[] = array(
                 'is-computed' => true,
                 'start' => $this->periodOfAvailability['start'],
@@ -129,7 +130,9 @@ class Availability
                 'user_id' => $this->periodOfAvailability['user_id']
             );
         }
-        if ($this->periodOfAvailability['user_id'] == $this->booking->userId() && $this->periodOfAvailability['end'] - $this->booking->end() >= 1) {
+
+        $wouldLeaveOpeningSmallerThanMinimumAfter = $this->periodOfAvailability['end'] - $this->booking->end() < 1;
+        if ($this->periodOfAvailability['user_id'] == $this->booking->userId() && !$wouldLeaveOpeningSmallerThanMinimumAfter) {
             $this->newAvailability[] = array(
                 'start' => $this->booking->end(),
                 'end' => $this->periodOfAvailability['end'],
