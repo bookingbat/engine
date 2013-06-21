@@ -875,7 +875,10 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
             array(
                 'padding'=>30
             ));
-        $availabilityArray = $availability->addBooking(array('start' => '01:00:00', 'duration' => 90));
+        $availabilityArray = $availability->addBooking(array(
+            'start' => '01:00:00',
+            'duration' => 90
+        ));
         $times = $this->incrementize($availabilityArray, 0, 90);
         $this->assertEquals(array(), $times, 'when available from 1-4am, has an appointment from 1-2:30am cannot schedule 90m appointment in remaining window of 2:30-4:00 because of extra 30m travel');
     }
@@ -892,9 +895,15 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
             array(
                 'padding'=>30
             ));
-        $availabilityArray = $availability->addBooking(array('start' => '01:00:00', 'duration' => 90));
+        $availabilityArray = $availability->addBooking(array(
+            'start' => '01:00:00',
+            'duration' => 90
+        ));
         $times = $this->incrementize($availabilityArray, 0, 90);
-        $expected = array('03:00:00', '03:30:00');
+        $expected = array(
+            '03:00:00',
+            '03:30:00'
+        );
         $this->assertEquals($expected, $times, 'when available from 1-5am, has an appointment from 1-2:30am can schedule a 90m appointment at 3am or 3:30am');
     }
 
@@ -907,7 +916,10 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
             )
         );
         $availability = new MassageAvailability($input,array('padding'=>30));
-        $availabilityArray = $availability->addBooking(array('start' => '01:00:00', 'duration' => 90));
+        $availabilityArray = $availability->addBooking(array(
+            'start' => '01:00:00',
+            'duration' => 90
+        ));
         $times = $this->incrementize($availabilityArray, 0, 90);
         $expected = array('03:00:00');
         $this->assertEquals($expected, $times, 'when available from 1-4:30am, and has an appt. from 1-2:30am, should allow 90m apt from 3-4:30am');
@@ -927,7 +939,10 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
             ));
         $availabilityArray = $availability->addBooking(array('start' => '01:00:00', 'duration' => 90));
         $times = $this->incrementize($availabilityArray, 0, 60);
-        $expected = array('03:00:00', '03:30:00');
+        $expected = array(
+            '03:00:00',
+            '03:30:00'
+        );
         $this->assertEquals($expected, $times, 'when availabile from 1-4:30am, has an apt. from 1-2:30am allow 60m apt at 3, or 3:30am');
     }
 
@@ -945,7 +960,11 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
             ));
         $availabilityArray = $availability->addBooking(array('start' => '01:00:00', 'duration' => 90));
         $times = $this->incrementize($availabilityArray, 0, 60);
-        $expected = array('03:00:00', '03:30:00', '04:00:00');
+        $expected = array(
+            '03:00:00',
+            '03:30:00',
+            '04:00:00'
+        );
         $this->assertEquals($expected, $times, 'when available from 1-5am, has an apt. from 1-2:30am, should allow 60m apt at 3am, 3:30am, or 4am');
     }
 
@@ -1032,7 +1051,11 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
             ));
         $availabilityArray = $availability->addBooking(array('start' => '21:30:00', 'duration' => 60));
         $times = $this->incrementize($availabilityArray, 0, 60);
-        $expected = array('19:00:00', '19:30:00', '20:00:00');
+        $expected = array(
+            '19:00:00',
+            '19:30:00',
+            '20:00:00'
+        );
         $this->assertEquals($expected, $times, 'should not allow an appointment to be booked at 8:30 because it doesn\'t allow the 30m padding before the 9:30 appointment!');
     }
 
@@ -1048,7 +1071,10 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
             array(
                 'padding'=>30
             ));
-        $availabilityArray = $availability->addBooking(array('start' => '20:00:00', 'duration' => 90));
+        $availabilityArray = $availability->addBooking(array(
+            'start' => '20:00:00',
+            'duration' => 90
+        ));
         $this->assertEquals(array(), $availabilityArray, 'should not allow appointments smaller than the minimum length');
     }
 
