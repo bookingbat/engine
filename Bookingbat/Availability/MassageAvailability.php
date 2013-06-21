@@ -219,8 +219,16 @@ class MassageAvailability extends Availability
             }
         }
 
-
         return $return;
     }
 
+    function getAvailabilityTimes()
+    {
+        foreach($this->availability as $key=>$val) {
+            if(!$this->availability[$key]['user_id']) {
+                unset($this->availability[$key]['user_id']);
+            }
+        }
+        return $this->availability;
+    }
 }

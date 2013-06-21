@@ -6,7 +6,7 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
 {
     function test_WhenHasOneBookingAtStartShouldModifyAvailability()
     {
-        $availability = new Availability(array(
+        $availability = new MassageAvailability(array(
             array(
                 'start' => '09:00:00',
                 'end' => '11:00:00'
