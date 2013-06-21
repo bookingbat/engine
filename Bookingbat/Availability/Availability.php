@@ -92,7 +92,7 @@ class Availability
             $times = $this->times($duration);
             foreach ($times as $time) {
                 if ($periodOfAvailability['start'] <= $time['start'] && $periodOfAvailability['end'] >= $time['end']) {
-                    $return[] = $time;
+                    $return[] = $time['start'];
                 }
             }
         }

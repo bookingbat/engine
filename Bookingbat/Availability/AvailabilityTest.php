@@ -13,18 +13,9 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
         );
         $times = $this->incrementize($input);
         $expected = array(
-            array(
-                'start' => '00:00:00',
-                'end' => '00:30:00'
-            ),
-            array(
-                'start' => '00:30:00',
-                'end' => '01:00:00'
-            ),
-            array(
-                'start' => '01:00:00',
-                'end' => '01:30:00'
-            )
+            '00:00:00',
+            '00:30:00',
+            '01:00:00',
         );
         $this->assertEquals($expected, $times, 'should incrementize time span into half hour segments');
     }
@@ -39,18 +30,9 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
         );
         $times = $this->incrementize($input);
         $expected = array(
-            array(
-                'start' => '01:00:00',
-                'end' => '01:30:00'
-            ),
-            array(
-                'start' => '01:30:00',
-                'end' => '02:00:00'
-            ),
-            array(
-                'start' => '02:00:00',
-                'end' => '02:30:00'
-            )
+            '01:00:00',
+            '01:30:00',
+            '02:00:00',
         );
         $this->assertEquals($expected, $times, 'should incrementize time span into half hour segments');
     }
@@ -65,14 +47,8 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
         );
         $times = $this->incrementize($input, 60);
         $expected = array(
-            array(
-                'start' => '01:00:00',
-                'end' => '02:00:00'
-            ),
-            array(
-                'start' => '02:00:00',
-                'end' => '03:00:00'
-            )
+            '01:00:00',
+            '02:00:00',
         );
         $this->assertEquals($expected, $times, 'should incrementize time span into one hour segments');
     }
@@ -87,10 +63,7 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
         );
         $times = $this->incrementize($input, 60);
         $expected = array(
-            array(
-                'start' => '01:00:00',
-                'end' => '02:00:00'
-            ),
+            '01:00:00',
         );
         $this->assertEquals($expected, $times, 'should incrementize time span into one hour segments');
     }
@@ -105,10 +78,7 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
         );
         $times = $this->incrementize($input, 60);
         $expected = array(
-            array(
-                'start' => '03:30:00',
-                'end' => '04:30:00'
-            ),
+            '03:30:00',
         );
         $this->assertEquals($expected, $times, 'should incrementize time span into one hour segments');
     }
@@ -123,18 +93,9 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
         );
         $times = $this->incrementize($input, 0);
         $expected = array(
-            array(
-                'start' => '01:00:00',
-                'end' => '01:30:00'
-            ),
-            array(
-                'start' => '01:30:00',
-                'end' => '02:00:00'
-            ),
-            array(
-                'start' => '02:00:00',
-                'end' => '02:30:00'
-            )
+            '01:00:00',
+            '01:30:00',
+            '02:00:00',
         );
         $this->assertEquals($expected, $times, 'should revert to half hour segments if invalid increment duration passed in');
     }
@@ -152,18 +113,9 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
         );
         $times = $this->incrementize($input, 0);
         $expected = array(
-            array(
-                'start' => '01:00:00',
-                'end' => '01:30:00'
-            ),
-            array(
-                'start' => '01:30:00',
-                'end' => '02:00:00'
-            ),
-            array(
-                'start' => '02:00:00',
-                'end' => '02:30:00'
-            )
+            '01:00:00',
+            '01:30:00',
+            '02:00:00',
         );
         shell_exec("date " . $dateBefore);
         $this->assertEquals($expected, $times, 'should not skip ahead on DST');
