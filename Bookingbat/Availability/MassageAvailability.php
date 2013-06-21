@@ -11,7 +11,7 @@ require_once('MergeOverlappingRanges.php');
 class MassageAvailability extends Availability
 {
     protected $booking;
-    protected $periodOfAvailability;
+
     protected $newAvailability;
 
     function possibleUserIdsForBooking($booking)
@@ -102,31 +102,6 @@ class MassageAvailability extends Availability
         }
         $this->availability = $this->newAvailability;
         return $this->availability;
-    }
-
-    function bookingConsumesAvailability()
-    {
-        return $this->booking->start() <= $this->periodOfAvailability['start'] && $this->booking->end() >= $this->periodOfAvailability['end'];
-    }
-
-    function bookingAtStartOfAvailability()
-    {
-        return $this->booking->start() == $this->periodOfAvailability['start'];
-    }
-
-    function bookingAtEndOfAvailability()
-    {
-        return $this->booking->end() == $this->periodOfAvailability['end'];
-    }
-
-    function bookingInMiddleOfAvailability()
-    {
-        return $this->booking->start() > $this->periodOfAvailability['start'] && $this->booking->end() < $this->periodOfAvailability['end'];
-    }
-
-    function bookingEntirelyAfterAvailability()
-    {
-        return $this->booking->start() > $this->periodOfAvailability['start'] && $this->booking->end() >= $this->periodOfAvailability['end'];
     }
 
     function modifyAvailabilityToStartWhenBookingEnds()

@@ -12,7 +12,8 @@ require_once(__DIR__.'/Booking.php');
 
 class Availability
 {
-    public $availability;
+    protected $availability;
+    protected $periodOfAvailability;
     protected $bookings = array();
     protected $padding=0;
 
@@ -29,37 +30,63 @@ class Availability
 
     function addBooking($booking)
     {
-        if (is_array($booking)) {
-            $booking = new \Bookingbat\Availability\Booking($booking);
+        $this->booking = $booking;
+        if (is_array($this->booking)) {
+            $this->booking = new \Bookingbat\Availability\Booking($this->booking);
         }
         $newAvailability = array();
-        foreach ($this->availability as $periodOfAvailability) {
-            $periodOfAvailability['start'] = $this->format($periodOfAvailability['start']);
-            $periodOfAvailability['end'] = $this->format($periodOfAvailability['end']);
+        foreach ($this->availability as $this->periodOfAvailability) {
+            $this->periodOfAvailability['start'] = $this->format($this->periodOfAvailability['start']);
+            $this->periodOfAvailability['end'] = $this->format($this->periodOfAvailability['end']);
 
-            if ($booking->start() <= $periodOfAvailability['start'] && $booking->end() >= $periodOfAvailability['end']) {
+            if ($this->bookingConsumesAvailability()) {
                 continue;
-            } // when booking at start of the availability
-            else if ($booking->start() == $periodOfAvailability['start']) {
+            } else if ($this->bookingAtStartOfAvailability()) {
+                // when booking at start of the availability
                 // should modify availability to start when booking ends
-                $newAvailability[] = array('start' => $booking->end(), 'end' => $periodOfAvailability['end']);
-            } // when booking at end  of the availability
-            else if ($booking->end() == $periodOfAvailability['end']) {
+                $newAvailability[] = array('start' => $this->booking->end(), 'end' => $this->periodOfAvailability['end']);
+            } else if ($this->bookingAtEndOfAvailability()) {
+                // when booking at end  of the availability
                 //should modify availability to end when booking starts'
-                $newAvailability[] = array('start' => $periodOfAvailability['start'], 'end' => $booking->start());
-            } // when booking is in middle of the availability
-            else if ($booking->start() > $periodOfAvailability['start'] && $booking->end() < $periodOfAvailability['end']) {
+                $newAvailability[] = array('start' => $this->periodOfAvailability['start'], 'end' => $this->booking->start());
+            } else if ($this->bookingInMiddleOfAvailability()) {
+                // when booking is in middle of the availability
                 // should split availability to end at start of booking, and start again at end of booking
-                $newAvailability[] = array('start' => $periodOfAvailability['start'], 'end' => $booking->start());
-                $newAvailability[] = array('start' => $booking->end(), 'end' => $periodOfAvailability['end']);
-            } // when no bookings during this period, return period unmodified
-            else {
-                $newAvailability[] = $periodOfAvailability;
+                $newAvailability[] = array('start' => $this->periodOfAvailability['start'], 'end' => $this->booking->start());
+                $newAvailability[] = array('start' => $this->booking->end(), 'end' => $this->periodOfAvailability['end']);
+            } else {
+                // when no bookings during this period, return period unmodified
+                $newAvailability[] = $this->periodOfAvailability;
             }
         }
         $this->availability = $newAvailability;
-        array_push($this->bookings, $booking);
+        array_push($this->bookings, $this->booking);
         return $this->availability;
+    }
+
+    function bookingConsumesAvailability()
+    {
+        return $this->booking->start() <= $this->periodOfAvailability['start'] && $this->booking->end() >= $this->periodOfAvailability['end'];
+    }
+
+    function bookingAtStartOfAvailability()
+    {
+        return $this->booking->start() == $this->periodOfAvailability['start'];
+    }
+
+    function bookingAtEndOfAvailability()
+    {
+        return $this->booking->end() == $this->periodOfAvailability['end'];
+    }
+
+    function bookingInMiddleOfAvailability()
+    {
+        return $this->booking->start() > $this->periodOfAvailability['start'] && $this->booking->end() < $this->periodOfAvailability['end'];
+    }
+
+    function bookingEntirelyAfterAvailability()
+    {
+        return $this->booking->start() > $this->periodOfAvailability['start'] && $this->booking->end() >= $this->periodOfAvailability['end'];
     }
 
     function mergeOverlappingRanges()
@@ -76,10 +103,10 @@ class Availability
     function getBookedTimes()
     {
         $times = array();
-        foreach($this->bookings as $booking) {
+        foreach($this->bookings as $this->booking) {
             array_push($times, array(
-                'start'=>$booking->start(),
-                'end'=>$booking->end()
+                'start'=>$this->booking->start(),
+                'end'=>$this->booking->end()
             ));
         }
         return $times;
@@ -88,10 +115,10 @@ class Availability
     function incrementize($availability, $duration = 30)
     {
         $return = array();
-        foreach ($availability as $periodOfAvailability) {
+        foreach ($availability as $this->periodOfAvailability) {
             $times = $this->times($duration);
             foreach ($times as $time) {
-                if ($periodOfAvailability['start'] <= $time['start'] && $periodOfAvailability['end'] >= $time['end']) {
+                if ($this->periodOfAvailability['start'] <= $time['start'] && $this->periodOfAvailability['end'] >= $time['end']) {
                     $return[] = $time['start'];
                 }
             }
