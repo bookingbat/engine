@@ -225,7 +225,7 @@ class MassageAvailability extends Availability
     function getAvailabilityTimes()
     {
         foreach($this->availability as $key=>$val) {
-            if(!$this->availability[$key]['user_id']) {
+            if(array_key_exists('user_id',$this->availability[$key]) && !$this->availability[$key]['user_id']) {
                 unset($this->availability[$key]['user_id']);
             }
         }
