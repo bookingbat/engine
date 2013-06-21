@@ -16,6 +16,8 @@ class Availability
     protected $periodOfAvailability;
     protected $bookings = array();
     protected $padding=0;
+    protected $booking;
+    protected $newAvailability;
 
     function __construct($availability=array(), $options = array())
     {
@@ -34,7 +36,7 @@ class Availability
         if (is_array($this->booking)) {
             $this->booking = new \Bookingbat\Availability\Booking($this->booking);
         }
-        $newAvailability = array();
+        $this->newAvailability = array();
         foreach ($this->availability as $this->periodOfAvailability) {
             $this->periodOfAvailability['start'] = $this->format($this->periodOfAvailability['start']);
             $this->periodOfAvailability['end'] = $this->format($this->periodOfAvailability['end']);
@@ -48,18 +50,27 @@ class Availability
             } else if ($this->bookingAtEndOfAvailability()) {
                 // when booking at end  of the availability
                 //should modify availability to end when booking starts'
-                $newAvailability[] = array('start' => $this->periodOfAvailability['start'], 'end' => $this->booking->start());
+                $this->newAvailability[] = array(
+                    'start' => $this->periodOfAvailability['start'],
+                    'end' => $this->booking->start()
+                );
             } else if ($this->bookingInMiddleOfAvailability()) {
                 // when booking is in middle of the availability
                 // should split availability to end at start of booking, and start again at end of booking
-                $newAvailability[] = array('start' => $this->periodOfAvailability['start'], 'end' => $this->booking->start());
-                $newAvailability[] = array('start' => $this->booking->end(), 'end' => $this->periodOfAvailability['end']);
+                $this->newAvailability[] = array(
+                    'start' => $this->periodOfAvailability['start'],
+                    'end' => $this->booking->start()
+                );
+                $this->newAvailability[] = array(
+                    'start' => $this->booking->end(),
+                    'end' => $this->periodOfAvailability['end']
+                );
             } else {
                 // when no bookings during this period, return period unmodified
-                $newAvailability[] = $this->periodOfAvailability;
+                $this->newAvailability[] = $this->periodOfAvailability;
             }
         }
-        $this->availability = $newAvailability;
+        $this->availability = $this->newAvailability;
         array_push($this->bookings, $this->booking);
         return $this->availability;
     }

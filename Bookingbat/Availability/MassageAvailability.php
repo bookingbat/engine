@@ -10,10 +10,6 @@ require_once('Booking.php');
 require_once('MergeOverlappingRanges.php');
 class MassageAvailability extends Availability
 {
-    protected $booking;
-
-    protected $newAvailability;
-
     function possibleUserIdsForBooking($booking)
     {
         $this->booking = $booking;
