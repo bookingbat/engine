@@ -2,7 +2,7 @@
 require_once(dirname(__FILE__) . '/Availability.php');
 require_once(dirname(__FILE__) . '/MassageAvailability.php');
 require_once('Booking.php');
-class MassageAvailabilityTest extends PHPUnit_Framework_TestCase
+class AvailabilityTest extends PHPUnit_Framework_TestCase
 {
     function test_WhenHasOneBookingAtStartShouldModifyAvailability()
     {
