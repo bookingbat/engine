@@ -1,12 +1,10 @@
 <?php
 /**
  * SEE AvailabilityTest.php FOR UNIT TESTS SHOWING EXTENSIVE EXAMPLE INPUTS & OUTPUTS
- *
- *
  * takes all availability and events and comes out w/ the actual availability
  * Ex: Trainer has recurring availability from 1:00 to 3:00 but an appt from 1:30 to 2:30,
  * after this function, trainer has availability from 1:00 to 1:30 and 2:30 to 3:00
- *
+
  */
 require_once('Booking.php');
 require_once('MergeOverlappingRanges.php');
@@ -37,13 +35,12 @@ class MassageAvailability extends Availability
             $booking = new \Bookingbat\Availability\Booking($booking);
         }
 
-
         $end = new DateTime($booking->end());
         array_push($this->bookings, $booking);
 
         // pad between appointments to allow reset time
-        if($this->padding) {
-            $end->add(new DateInterval("P0Y0DT0H".$this->padding."M"));
+        if ($this->padding) {
+            $end->add(new DateInterval("P0Y0DT0H" . $this->padding . "M"));
         }
 
         $booking = new \Bookingbat\Availability\Booking(array(
@@ -67,16 +64,16 @@ class MassageAvailability extends Availability
 
             if ($booking->start() <= $periodOfAvailability['start'] && $booking->end() >= $periodOfAvailability['end']) {
                 continue;
-            } // when booking at start of the availability
-            else if ($booking->start() == $periodOfAvailability['start']) {
+            } else if ($booking->start() == $periodOfAvailability['start']) {
+                // when booking at start of the availability
                 // should modify availability to start when booking ends
                 $newAvailability[] = array('start' => $booking->end(), 'end' => $periodOfAvailability['end'], 'user_id' => $periodOfAvailability['user_id']);
-            } // when booking at end  of the availability
-            else if ($booking->end() == $periodOfAvailability['end']) {
+            } else if ($booking->end() == $periodOfAvailability['end']) {
+                // when booking at end  of the availability
                 //should modify availability to end when booking starts
                 $newAvailability[] = array('is-computed' => true, 'start' => $periodOfAvailability['start'], 'end' => $booking->start(), 'user_id' => $periodOfAvailability['user_id']);
-            } // when booking is in middle of the availability, should split availability to end at start of booking, and start again at end of booking
-            else if ($booking->start() > $periodOfAvailability['start'] && $booking->end() < $periodOfAvailability['end']) {
+            } else if ($booking->start() > $periodOfAvailability['start'] && $booking->end() < $periodOfAvailability['end']) {
+                // when booking is in middle of the availability, should split availability to end at start of booking, and start again at end of booking
                 // don't allow time blocks smaller than the minimum appointment length
                 if ($periodOfAvailability['user_id'] == $booking->userId() && $booking->start() - $periodOfAvailability['start'] > 1) {
                     $newAvailability[] = array('is-computed' => true, 'start' => $periodOfAvailability['start'], 'end' => $booking->start(), 'user_id' => $periodOfAvailability['user_id']);
@@ -84,8 +81,8 @@ class MassageAvailability extends Availability
                 if ($periodOfAvailability['user_id'] == $booking->userId() && $periodOfAvailability['end'] - $booking->end() >= 1) {
                     $newAvailability[] = array('start' => $booking->end(), 'end' => $periodOfAvailability['end'], 'user_id' => $periodOfAvailability['user_id']);
                 }
-            } // booking starts after availability starts, and ends after availability ends
-            else if ($booking->start() > $periodOfAvailability['start'] && $booking->end() >= $periodOfAvailability['end']) {
+            } else if ($booking->start() > $periodOfAvailability['start'] && $booking->end() >= $periodOfAvailability['end']) {
+                // booking starts after availability starts, and ends after availability ends
                 // don't allow time blocks smaller than the minimum appointment length
                 if ($booking->start() - $periodOfAvailability['start'] <= 1) {
                     continue;
