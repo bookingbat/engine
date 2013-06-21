@@ -13,7 +13,10 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
             )
 
         ));
-        $availability->addBooking(array('start' => '09:00', 'end' => '09:30'));
+        $availability->addBooking(array(
+            'start' => '09:00',
+            'end' => '09:30'
+        ));
         $newAvailability = $availability->getAvailabilityTimes();
 
         $expected = array(
