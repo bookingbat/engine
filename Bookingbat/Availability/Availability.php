@@ -90,7 +90,9 @@ class Availability
 
     function bookingOverlapsEndOfAvailability()
     {
-        return $this->booking->start() > $this->periodOfAvailability['start'] && $this->booking->end() >= $this->periodOfAvailability['end'];
+        return $this->booking->start() > $this->periodOfAvailability['start'] &&
+            $this->booking->start() < $this->periodOfAvailability['end'] &&
+            $this->booking->end() >= $this->periodOfAvailability['end'];
     }
 
     function modifyAvailabilityToStartWhenBookingEnds()

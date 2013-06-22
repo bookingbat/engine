@@ -31,7 +31,7 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
 
     function test_WhenHasOneBookingAtEndShouldModifyAvailability()
     {
-        $availability = new Availability(array(
+        $availability = new MassageAvailability(array(
             array(
                 'start' => '09:00:00',
                 'end' => '11:00:00'
@@ -53,7 +53,8 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
             ),
             array(
                 'start' => '11:30:00',
-                'end' => '15:30:00'
+                'end' => '15:30:00',
+                'is-computed'=>true
             ),
         );
 
@@ -605,7 +606,6 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
             array(
                 'start' => '10:00:00',
                 'end' => '11:00:00',
-                'user_id' => null,
             )
         );
 

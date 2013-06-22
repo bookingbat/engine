@@ -97,7 +97,7 @@ class MassageAvailability extends Availability
             }
         }
         $this->availability = $this->newAvailability;
-        return $this->availability;
+        return $this->getAvailabilityTimes();
     }
 
     function incrementize($availability, $duration = 30, $lengthOfAppointmentToMake = null)
@@ -157,11 +157,12 @@ class MassageAvailability extends Availability
 
     function getAvailabilityTimes()
     {
-        foreach($this->availability as $key=>$val) {
-            if(array_key_exists('user_id',$this->availability[$key]) && !$this->availability[$key]['user_id']) {
-                unset($this->availability[$key]['user_id']);
+        $availability = $this->availability;
+        foreach($availability as $key=>$val) {
+            if(array_key_exists('user_id',$availability[$key]) && !$availability[$key]['user_id']) {
+                unset($availability[$key]['user_id']);
             }
         }
-        return $this->availability;
+        return $availability;
     }
 }
