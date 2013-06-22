@@ -22,6 +22,23 @@ class MergeOverlappingRangesTest extends PHPUnit_Framework_TestCase
 
     }
 
+    function testShouldNotMergeNonOverlapping()
+    {
+        $availability = array(
+            array(
+                'start' => '09:00:00',
+                'end' => '11:00:00'
+            ),
+            array(
+                'start' => '11:30:00',
+                'end' => '16:00:00'
+            ),
+        );
+        $merge = new MergeOverlappingRanges($availability);
+        $mergedAvailability = $merge->merge();
+        $this->assertEquals($availability, $mergedAvailability,'should not merge non-overlapping ranges');
+    }
+
     function test_WhenTwoRangesStartAtSameTime_ShouldMergeUserIds()
     {
         $availability = array(
