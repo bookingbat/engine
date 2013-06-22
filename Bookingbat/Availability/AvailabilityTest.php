@@ -118,7 +118,7 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
 
     function test_WhenBookingStartsBeforeAvailability()
     {
-        $availability = new Availability(array(
+        $availability = new MassageAvailability(array(
             array(
                 'start' => '09:00:00',
                 'end' => '09:30:00'
@@ -138,7 +138,7 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
 
     function test_WhenBookingExtendsBeyondAvailability()
     {
-        $availability = new Availability(array(
+        $availability = new MassageAvailability(array(
             array(
                 'start' => '09:00',
                 'end' => '09:30'
@@ -158,7 +158,7 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
 
     function test_WhenBookingStartsBeforeAvailabilityAndExtendsBeyond()
     {
-        $availability = new Availability(array(
+        $availability = new MassageAvailability(array(
             array(
                 'start' => '09:00',
                 'end' => '09:30'
@@ -178,7 +178,7 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
 
     function test_WhenBookingMatchesAvailability()
     {
-        $availability = new Availability(array(
+        $availability = new MassageAvailability(array(
             array(
                 'start' => '09:00',
                 'end' => '09:30'
@@ -198,7 +198,7 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
 
     function test_WhenBookingIsSameAsAvailability()
     {
-        $availability = new Availability(array(
+        $availability = new MassageAvailability(array(
             array(
                 'start' => '00:30:00',
                 'end' => '01:00:00'
@@ -218,7 +218,7 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
 
     function test_WhenBookingIsSameAsAvailabilityAndTheyEndAtMidnight()
     {
-        $availability = new Availability(array(
+        $availability = new MassageAvailability(array(
             array(
                 'start' => '23:30:00',
                 'end' => '00:00:00'
@@ -238,7 +238,7 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
 
     function test_WhenHourLongAvailabilitySameAsBooking()
     {
-        $availability = new Availability(array(
+        $availability = new MassageAvailability(array(
             array(
                 'start' => '03:30:00',
                 'end' => '04:30:00'
@@ -258,7 +258,7 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
 
     function test_WhenBookingConsumesAndExtendsPastAvailability()
     {
-        $availability = new Availability(array(
+        $availability = new MassageAvailability(array(
             array(
                 'start' => '09:00',
                 'end' => '09:30'
@@ -278,7 +278,7 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
 
     function test_ShouldCompareByTimeNotString()
     {
-        $availability = new Availability(array(
+        $availability = new MassageAvailability(array(
             array(
                 'start' => '00:30:00',
                 'end' => '01:00:00'
