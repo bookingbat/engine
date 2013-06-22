@@ -83,7 +83,7 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
 
     function test_WhenHasOneBookingInMiddleShouldModifyAvailability()
     {
-        $availability = new Availability(array(
+        $availability = new MassageAvailability(array(
             array(
                 'start' => '09:00:00',
                 'end' => '11:00:00'
@@ -621,7 +621,8 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
             )
 
         ), array(
-            'padding'=>30
+            'padding'=>30,
+            'minimum_booking_duration'=>1
         ));
         $newAvailability = $availability->addBooking(array(
             'start' => '10:00',
@@ -643,7 +644,8 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
         $availability = new MassageAvailability(
             array_merge($availabilityForUser1, $availabilityForUser2),
             array(
-                'padding'=>30
+                'padding'=>30,
+                'minimum_booking_duration'=>1
             ));
         $newAvailability = $availability->addBooking(array(
             'start' => '02:00',
@@ -679,7 +681,8 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
         $availability = new MassageAvailability(
             array_merge($availabilityForUser1, $availabilityForUser2),
             array(
-                'padding'=>30
+                'padding'=>30,
+                'minimum_booking_duration'=>1
             ));
         $availabilityArray = $availability->addBooking(array(
             'start' => '02:00',
@@ -713,7 +716,8 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
         $availability = new MassageAvailability(
             array_merge($availabilityForUser1, $availabilityForUser2),
             array(
-                'padding'=>30
+                'padding'=>30,
+                'minimum_booking_duration'=>1
             ));
         $availability->addBooking(array(
             'start' => '02:00',
@@ -751,7 +755,8 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
         $availability = new MassageAvailability(
             array_merge($availabilityForUser1, $availabilityForUser2),
             array(
-                'padding'=>30
+                'padding'=>30,
+                'minimum_booking_duration'=>1
             ));
         $availabilityArray = $availability->addBooking(array(
             'start' => '20:00',
@@ -1021,7 +1026,8 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
         );
         $availability = new MassageAvailability($input,
             array(
-                'padding'=>30
+                'padding'=>30,
+                'minimum_booking_duration'=>1
             ));
         $availabilityArray = $availability->addBooking(array('start' => '03:30:00', 'duration' => 90));
 
@@ -1090,7 +1096,8 @@ class AvailabilityTest extends PHPUnit_Framework_TestCase
         );
         $availability = new MassageAvailability($input,
             array(
-                'padding'=>30
+                'padding'=>30,
+                'minimum_booking_duration'=>1
             ));
         $availabilityArray = $availability->addBooking(array('start' => '21:30:00', 'duration' => 60));
         $times = $this->incrementize($availabilityArray, 0, 60);

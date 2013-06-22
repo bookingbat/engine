@@ -81,7 +81,7 @@ class MassageAvailability extends Availability
             } else if ($this->bookingOverlapsEndOfAvailability()) {
                 // booking starts after availability starts, and ends after availability ends
                 // don't allow time blocks smaller than the minimum appointment length
-                if ($this->booking->start() - $this->periodOfAvailability['start'] <= 1) {
+                if ($this->booking->start() - $this->periodOfAvailability['start'] <= $this->minimum_booking_duration) {
                     continue;
                 }
                 $this->newAvailability[] = array(

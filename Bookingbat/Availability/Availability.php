@@ -12,6 +12,7 @@ require_once(__DIR__.'/Booking.php');
 
 class Availability
 {
+    protected $minimum_booking_duration=0;
     protected $availability;
     protected $periodOfAvailability;
     protected $bookings = array();
@@ -26,6 +27,8 @@ class Availability
             switch($option) {
                 case 'padding':
                     $this->padding = $value;
+                case 'minimum_booking_duration':
+                    $this->minimum_booking_duration = $value;
             }
         }
     }
@@ -116,18 +119,23 @@ class Availability
 
     function splitAvailabilityAroundBooking()
     {
-        if(!array_key_exists('user_id',$this->periodOfAvailability)) {
-            $this->newAvailability[] = array(
-                'start' => $this->periodOfAvailability['start'],
-                'end' => $this->booking->start()
-            );
-            $this->newAvailability[] = array(
-                'start' => $this->booking->end(),
-                'end' => $this->periodOfAvailability['end']
-            );
+        if(!array_key_exists('user_id',$this->periodOfAvailability) || !$this->periodOfAvailability['user_id']) {
+            $wouldLeaveOpeningSmallerThanMinimumBefore = $this->booking->start() - $this->periodOfAvailability['start'] <= $this->minimum_booking_duration;
+            if(!$wouldLeaveOpeningSmallerThanMinimumBefore) {
+                $this->newAvailability[] = array(
+                    'start' => $this->periodOfAvailability['start'],
+                    'end' => $this->booking->start()
+                );
+            }
+            $wouldLeaveOpeningSmallerThanMinimumAfter = $this->periodOfAvailability['end'] - $this->booking->end() < $this->minimum_booking_duration;
+            if(!$wouldLeaveOpeningSmallerThanMinimumAfter) {
+                $this->newAvailability[] = array(
+                    'start' => $this->booking->end(),
+                    'end' => $this->periodOfAvailability['end']
+                );
+            }
         } else {
-
-            $wouldLeaveOpeningSmallerThanMinimumBefore = $this->booking->start() - $this->periodOfAvailability['start'] <= 1;
+            $wouldLeaveOpeningSmallerThanMinimumBefore = $this->booking->start() - $this->periodOfAvailability['start'] <= $this->minimum_booking_duration;
             if ($this->periodOfAvailability['user_id'] == $this->booking->userId() && !$wouldLeaveOpeningSmallerThanMinimumBefore) {
                 $this->newAvailability[] = array(
                     'is-computed' => true,
@@ -137,7 +145,7 @@ class Availability
                 );
             }
 
-            $wouldLeaveOpeningSmallerThanMinimumAfter = $this->periodOfAvailability['end'] - $this->booking->end() < 1;
+            $wouldLeaveOpeningSmallerThanMinimumAfter = $this->periodOfAvailability['end'] - $this->booking->end() < $this->minimum_booking_duration;
             if ($this->periodOfAvailability['user_id'] == $this->booking->userId() && !$wouldLeaveOpeningSmallerThanMinimumAfter) {
                 $this->newAvailability[] = array(
                     'start' => $this->booking->end(),
