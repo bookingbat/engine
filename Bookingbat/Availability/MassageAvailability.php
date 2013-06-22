@@ -78,7 +78,7 @@ class MassageAvailability extends Availability
                 // when booking is in middle of the availability, should split availability to end at start of booking, and start again at end of booking
                 // don't allow time blocks smaller than the minimum appointment length
                 $this->splitAvailabilityAroundBooking();
-            } else if ($this->bookingEntirelyAfterAvailability()) {
+            } else if ($this->bookingOverlapsEndOfAvailability()) {
                 // booking starts after availability starts, and ends after availability ends
                 // don't allow time blocks smaller than the minimum appointment length
                 if ($this->booking->start() - $this->periodOfAvailability['start'] <= 1) {
