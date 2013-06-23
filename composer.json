@@ -3,7 +3,7 @@
     "type": "library",
     "description": "A framework for defining recurring windows of availability, and \"subtracting\" bookings/appointments from them.",
     "keywords": [],
-    "homepage": "https://github.com/bookingbat/availability",
+    "homepage": "http://bookingbat.com",
     "license": "OSL 3.0",
     "authors": [
         {
