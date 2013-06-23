@@ -6,8 +6,6 @@
  * @copyright Copyright (c) 2013 Josh Ribakoff
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-require_once(dirname(__FILE__) . '/Availability.php');
-require_once('Booking.php');
 class AvailabilityTest extends PHPUnit_Framework_TestCase
 {
     function test_WhenHasOneBookingAtStartShouldModifyAvailability()

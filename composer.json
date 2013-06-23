@@ -12,5 +12,10 @@
     ],
     "require": {
         "php": ">=5.3.3"
+    },
+    "autoload": {
+        "classmap": [
+            "Bookingbat/Availability"
+        ]
     }
 }
