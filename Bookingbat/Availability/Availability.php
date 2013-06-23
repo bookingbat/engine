@@ -37,7 +37,7 @@ class Availability
     {
         $this->booking = $booking;
         if (is_array($this->booking)) {
-            $this->booking = new \Bookingbat\Availability\Booking($this->booking);
+            $this->booking = new \Bookingbat\Engine\Booking($this->booking);
         }
 
         $end = new DateTime($this->booking->end());
@@ -48,7 +48,7 @@ class Availability
             $end->add(new DateInterval("P0Y0DT0H" . $this->padding . "M"));
         }
 
-        $this->booking = new \Bookingbat\Availability\Booking(array(
+        $this->booking = new \Bookingbat\Engine\Booking(array(
             'start' => $this->booking->start(),
             'end' => $end->format('H:i:00'),
             'user_id' => $this->booking->userId()

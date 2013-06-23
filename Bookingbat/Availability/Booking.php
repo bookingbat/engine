@@ -1,5 +1,5 @@
 <?php
-namespace Bookingbat\Availability;
+namespace Bookingbat\Engine;
 class Booking
 {
     protected $options;
