@@ -17,5 +17,8 @@
         "classmap": [
             "code"
         ]
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.19"
     }
 }
