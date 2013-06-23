@@ -15,7 +15,7 @@
 
     <testsuites>
         <testsuite name="all">
-            <directory>Bookingbat/Availability/</directory>
+            <directory>test/</directory>
         </testsuite>
     </testsuites>
 
