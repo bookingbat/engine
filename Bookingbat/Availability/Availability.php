@@ -1,4 +1,7 @@
 <?php
+namespace Bookingbat\Engine;
+use \DateTime,
+    \DateInterval;
 /**
  * SEE AvailabilityTest.php FOR UNIT TESTS SHOWING EXTENSIVE EXAMPLE INPUTS & OUTPUTS
  *

@@ -1,4 +1,6 @@
 <?php
+namespace Bookingbat\Engine;
+use \DateTime;
 class MergeOverlappingRanges
 {
     public $minimumRange;

@@ -14,7 +14,7 @@ class MergeOverlappingRangesTest extends PHPUnit_Framework_TestCase
                 'end' => '03:00:00'
             )
         );
-        $merge = new MergeOverlappingRanges($availability);
+        $merge = new \Bookingbat\Engine\MergeOverlappingRanges($availability);
         $mergedAvailability = $merge->merge();
 
         $expected = array(array('start' => '02:30:00', 'end' => '04:00:00'));
@@ -34,7 +34,7 @@ class MergeOverlappingRangesTest extends PHPUnit_Framework_TestCase
                 'end' => '16:00:00'
             ),
         );
-        $merge = new MergeOverlappingRanges($availability);
+        $merge = new \Bookingbat\Engine\MergeOverlappingRanges($availability);
         $mergedAvailability = $merge->merge();
         $this->assertEquals($availability, $mergedAvailability,'should not merge non-overlapping ranges');
     }
@@ -58,7 +58,7 @@ class MergeOverlappingRangesTest extends PHPUnit_Framework_TestCase
                 'user_id' => 2
             )
         );
-        $merge = new MergeOverlappingRanges($availability);
+        $merge = new \Bookingbat\Engine\MergeOverlappingRanges($availability);
         $mergedAvailability = $merge->merge();
 
         $expected = array(
@@ -102,7 +102,7 @@ class MergeOverlappingRangesTest extends PHPUnit_Framework_TestCase
             )
         );
 
-        $merge = new MergeOverlappingRanges($availability);
+        $merge = new \Bookingbat\Engine\MergeOverlappingRanges($availability);
         $mergedAvailability = $merge->merge();
 
         $expected = array(
@@ -128,7 +128,7 @@ class MergeOverlappingRangesTest extends PHPUnit_Framework_TestCase
                 'end' => '03:00:00',
             ),
         );
-        $merge = new MergeOverlappingRanges($availability, 60);
+        $merge = new \Bookingbat\Engine\MergeOverlappingRanges($availability, 60);
         $mergedAvailability = $merge->merge();
 
         $expected = array();
@@ -164,7 +164,7 @@ class MergeOverlappingRangesTest extends PHPUnit_Framework_TestCase
 //                    'user_id'=>array(15)
 //                ),
 //        );
-//        $merge = new MergeOverlappingRanges($availability,60);
+//        $merge = new \Bookingbat\Engine\MergeOverlappingRanges($availability,60);
 //        $mergedAvailability = $merge->merge();
 //        print_r($mergedAvailability);exit();
 //        $expected = array();
