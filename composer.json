@@ -4,7 +4,7 @@
     "description": "A framework for defining recurring windows of availability, and \"subtracting\" bookings/appointments from them.",
     "keywords": [],
     "homepage": "https://github.com/bookingbat/availability",
-    "license": "BSD-3-Clause",
+    "license": "OSL 3.0",
     "authors": [
         {
             "name": "Josh Ribakoff"
