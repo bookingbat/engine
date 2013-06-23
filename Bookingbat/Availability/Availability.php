@@ -1,18 +1,19 @@
 <?php
+/**
+ * Booking Bat - Availability Engine (http://bookingbat.com)
+ *
+ * @link      http://github.com/bookingbat/engine for the canonical source repository
+ * @copyright Copyright (c) 2013 Josh Ribakoff
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 namespace Bookingbat\Engine;
 use \DateTime,
     \DateInterval;
-/**
- * SEE AvailabilityTest.php FOR UNIT TESTS SHOWING EXTENSIVE EXAMPLE INPUTS & OUTPUTS
- *
- *
- * takes all availability and events and comes out w/ the actual availability
- * Ex: Trainer has recurring availability from 1:00 to 3:00 but an appt from 1:30 to 2:30,
- * after this function, trainer has availability from 1:00 to 1:30 and 2:30 to 3:00
- *
- */
+
+
 require_once(__DIR__.'/Booking.php');
 
+/** Takes all availability and events and comes out w/ the actual availability */
 class Availability
 {
     protected $minimum_booking_duration=0;

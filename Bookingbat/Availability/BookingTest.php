@@ -1,4 +1,11 @@
 <?php
+/**
+ * Booking Bat - Availability Engine (http://bookingbat.com)
+ *
+ * @link      http://github.com/bookingbat/engine for the canonical source repository
+ * @copyright Copyright (c) 2013 Josh Ribakoff
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 require_once('Booking.php');
 class BookingTest extends PHPUnit_Framework_TestCase
 {
