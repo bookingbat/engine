@@ -1,5 +1,5 @@
 {
-    "name": "bookingbat/availability",
+    "name": "bookingbat/engine",
     "type": "library",
     "description": "A framework for defining recurring windows of availability, and \"subtracting\" bookings/appointments from them.",
     "keywords": [],
