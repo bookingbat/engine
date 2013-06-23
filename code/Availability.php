@@ -11,7 +11,7 @@ use \DateTime,
     \DateInterval;
 
 
-require_once(__DIR__.'/Booking.php');
+require_once(__DIR__ . '/Booking.php');
 
 /** Takes all availability and events and comes out w/ the actual availability */
 class Availability
