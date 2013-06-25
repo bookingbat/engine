@@ -1,5 +1,5 @@
-[![Latest Stable Version](https://poser.pugx.org/bookingbat/engine/version.png)](https://packagist.org/packages/symfony/symfony)
-[![Total Downloads](https://poser.pugx.org/bookingbat/engine/d/total.png)](https://packagist.org/packages/symfony/symfony)
+[![Latest Stable Version](https://poser.pugx.org/bookingbat/engine/version.png)](https://packagist.org/packages/bookingbat/engine)
+[![Total Downloads](https://poser.pugx.org/bookingbat/engine/d/total.png)](https://packagist.org/packages/bookingbat/engine)
 [![Build Status](https://travis-ci.org/bookingbat/engine.png?branch=master)](https://travis-ci.org/bookingbat/engine)
 
 Introduction
